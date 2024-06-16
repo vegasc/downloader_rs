@@ -7,7 +7,7 @@ pub struct Downloader { }
 
 impl Downloader {
 
-    pub async fn download(url: String, mut logger: Box<dyn ProgressLogger>) -> Result<Box<Bytes>, Box<dyn std::error::Error>> {
+    pub async fn download(url: &String, mut logger: Box<dyn ProgressLogger>) -> Result<Box<Bytes>, Box<dyn std::error::Error>> {
         let response = reqwest::get(url).await?;
 
         let total_size = response

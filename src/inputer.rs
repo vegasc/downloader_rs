@@ -11,7 +11,7 @@ impl Inputer {
         return Inputer{regex: regex};
     }
 
-    pub fn input(&self, msg: String, err_msg: String) -> Result<String, String> {
+    pub fn input(&self, msg: &str, err_msg: &str) -> Result<String, String> {
         if !msg.trim().is_empty() {
             println!("{msg}");  
         }
@@ -27,7 +27,7 @@ impl Inputer {
         if regex.is_match(&unwraped) {
             return Ok(unwraped);
         } else {
-            return Err(err_msg);
+            return Err(err_msg.to_string());
         }
     }
 

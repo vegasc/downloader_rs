@@ -26,11 +26,11 @@ async fn process() {
     let inputer = Inputer::new(regex);
 
     let result: Result<String, String> = inputer
-    .input(String::from("url: "), String::from("error getting url"));
+    .input("url: ", "error getting url");
 
     match result {
         Ok(value) => {
-            download(value).await;
+            download(&value).await;
         }
         Err(error) => {
             println!("{error}");
@@ -39,15 +39,15 @@ async fn process() {
     }
 }
 
-async fn download(url: String) {
+async fn download(url: &String) {
     let logger = Box::new(DownloadLogger::new());
     let result = Downloader::download(
-        url.clone(),
+        &url,
         logger
     ).await;
     match result {
         Ok(response) => {
-            save_file(url, response).await;
+            save_file(&url, response).await;
         }
         Err(error) => {
             println!("{error}");
@@ -55,7 +55,7 @@ async fn download(url: String) {
     }
 }
 
-async fn save_file(url: String, data: Box<Bytes>) {
+async fn save_file(url: &String, data: Box<Bytes>) {
     let url_parsed = Url::parse(&url.to_string()).unwrap();
         
     let file_name = url_parsed
