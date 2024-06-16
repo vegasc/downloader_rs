@@ -1,9 +1,12 @@
 use bytes::Bytes;
+use download_logger::DownloadLogger;
 use reqwest::Url;
 
 mod inputer;
 mod downloader;
 mod file_namager;
+mod progress_logger_trait;
+mod download_logger;
 
 use crate::inputer::Inputer;
 use crate::downloader::Downloader;
@@ -35,7 +38,11 @@ async fn process() {
 }
 
 async fn download(url: String) {
-    let result = Downloader::download(url.clone()).await;
+    let logger = Box::new(DownloadLogger::new());
+    let result = Downloader::download(
+        url.clone(),
+        logger
+    ).await;
     match result {
         Ok(response) => {
             save_file(url, response).await;
