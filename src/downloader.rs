@@ -3,12 +3,6 @@ use futures_util::StreamExt;
 
 use crate::progress_logger_trait::ProgressLogger;
 
-// icon: 
-// https://cdn-icons-png.flaticon.com/256/1160/1160358.png
-
-// mp4(small):
-// 
-
 pub struct Downloader { }
 
 impl Downloader {
@@ -29,8 +23,7 @@ impl Downloader {
             downloaded_size += chunk.len();
             downloaded.extend_from_slice(&chunk);
 
-            let progress = downloaded_size as f64 / total_size as f64 * 100.0;
-            logger.log(total_size, progress);
+            logger.log(total_size, downloaded_size as f64);
         }
 
         Ok(Box::new(Bytes::from(downloaded)))
