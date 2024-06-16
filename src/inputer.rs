@@ -7,13 +7,13 @@ pub struct Inputer {
 
 impl Inputer {
 
-    pub const  fn new(regex: String) -> Inputer {
+    pub const fn new(regex: String) -> Inputer {
         return Inputer{regex: regex};
     }
 
     pub fn input(&self, msg: String, err_msg: String) -> Result<String, String> {
         if !msg.trim().is_empty() {
-            println!("{msg}");
+            println!("{msg}");  
         }
 
         let mut input: String = String::new();
