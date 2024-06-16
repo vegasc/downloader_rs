@@ -1,6 +1,8 @@
 use bytes::Bytes;
 use download_logger::DownloadLogger;
 use reqwest::Url;
+use std::env;
+use std::process::Command;
 
 mod inputer;
 mod downloader;
@@ -67,9 +69,22 @@ async fn save_file(url: String, data: Box<Bytes>) {
         Ok(path) => {
             println!("File has been downloaded and saved:");
             println!("Path: {path}");
+            open(path.as_str());
         }
         Err(error) => {
             println!("Error: {error}");
         }
     }
+
+    fn open(path: &str) {
+        let os = env::consts::OS;
+        if os == "macos" {
+            Command::new("open")
+            .arg("-R")
+            .arg(path)
+            .spawn()
+            .unwrap();
+        }
+    }
+
 }

@@ -12,7 +12,7 @@ impl Downloader {
 
         let total_size = response
             .content_length()
-            .ok_or("Failed to get content length")? as f64;
+            .unwrap_or_default() as f64;
 
         let mut stream = response.bytes_stream();
         let mut downloaded: Vec<u8> = Vec::new();

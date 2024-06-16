@@ -7,7 +7,7 @@ pub struct FileManager {}
 
 impl FileManager {
 
-    pub async fn save_file<'a>(name: &str, path: &str, data:Box<Bytes>) -> Result<Box<String>, Box<dyn std::error::Error>> {
+    pub async fn save_file<'a>(name: &str, path: &str, data:Box<Bytes>) -> Result<String, Box<dyn std::error::Error>> {
         let mut file_path = PathBuf::from(path);
         file_path.push(name);
 
@@ -20,7 +20,7 @@ impl FileManager {
         let mut file = File::create(file_path).await?;
         file.write_all(&data).await?;
         
-        Ok(Box::new(file_path_string))
+        Ok(file_path_string)
     }
 
 }
