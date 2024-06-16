@@ -76,15 +76,15 @@ async fn save_file(url: &String, data: Box<Bytes>) {
         }
     }
 
-    fn open(path: &str) {
-        let os = env::consts::OS;
-        if os == "macos" {
-            Command::new("open")
-            .arg("-R")
-            .arg(path)
-            .spawn()
-            .unwrap();
-        }
-    }
+}
 
+fn open(path: &str) {
+    let os = env::consts::OS;
+    if os == "macos" {
+        Command::new("open")
+        .arg("-R")
+        .arg(path)
+        .spawn()
+        .unwrap();
+    }
 }

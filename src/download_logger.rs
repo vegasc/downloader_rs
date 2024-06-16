@@ -18,9 +18,9 @@ impl ProgressLogger for DownloadLogger {
                 let bar = ProgressBar::new(total as u64);
                 bar.set_style(
                     ProgressStyle::default_bar()
-                        .template("{spinner:.green} [{elapsed_precise}] [{bar:40.cyan/blue}] {pos}/{len} ({eta})")
+                        .template("{spinner:.green} [{elapsed_precise}] {bar:40.cyan/blue} [{decimal_bytes}/{decimal_total_bytes}] {eta}")
                         .unwrap()
-                        .progress_chars("#>-"),
+                        // .progress_chars("#>-")
                 );
                 self.pb = Some(bar);
             }
