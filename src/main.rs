@@ -35,8 +35,7 @@ async fn process() {
 }
 
 async fn download(url: String) {
-    let downloader = Downloader::new(url.clone());
-    let result = downloader.download().await;
+    let result = Downloader::download(url.clone()).await;
     match result {
         Ok(response) => {
             save_file(url, response).await;

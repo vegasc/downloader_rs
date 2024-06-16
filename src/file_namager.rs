@@ -17,23 +17,10 @@ impl FileManager {
                         .unwrap()
                         .to_string();
 
-        let file = File::create(file_path).await;
-        match file {
-            Ok(mut value) => {
-                let write = value.write_all(&data).await;
-                match  write {
-                    Ok(_) => {
-                        return Ok(Box::new(file_path_string));
-                    }
-                    Err(error) => {
-                        return Err(Box::new(error));
-                    }
-                }
-            }
-            Err(error) => {
-                return Err(Box::new(error));
-            }
-        }
+        let mut file = File::create(file_path).await?;
+        file.write_all(&data).await?;
+        
+        Ok(Box::new(file_path_string))
     }
 
 }

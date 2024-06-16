@@ -1,17 +1,12 @@
 use bytes::Bytes;
 use futures_util::StreamExt;
 
-pub struct Downloader {
-    url: String,
-}
+pub struct Downloader { }
 
 impl Downloader {
-    pub fn new(url: String) -> Downloader {
-        Downloader { url }
-    }
 
-    pub async fn download(&self) -> Result<Box<Bytes>, Box<dyn std::error::Error>> {
-        let response = reqwest::get(&self.url).await?;
+    pub async fn download(url: String) -> Result<Box<Bytes>, Box<dyn std::error::Error>> {
+        let response = reqwest::get(url).await?;
 
         let total_size = response
             .content_length()
@@ -32,4 +27,5 @@ impl Downloader {
 
         Ok(Box::new(Bytes::from(downloaded)))
     }
+
 }
