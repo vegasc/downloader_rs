@@ -1,16 +1,19 @@
-use std::borrow::Borrow;
-
-use futures::executor::block_on;
 use bytes::Bytes;
+use reqwest::Url;
 
 mod inputer;
 mod downloader;
+mod file_namager;
 
 use crate::inputer::Inputer;
 use crate::downloader::Downloader;
+use crate::file_namager::FileManager;
 
-fn main() {
-    block_on(process());
+static DEST_PATH: &str = "/Users/aleksey/Documents/downloader/files_rs";
+
+#[tokio::main]
+async fn main() {
+    process().await;
 }
 
 async fn process() {
@@ -22,7 +25,6 @@ async fn process() {
 
     match result {
         Ok(value) => {
-            println!("Value: {value}");
             download(value).await;
         }
         Err(error) => {
@@ -37,7 +39,7 @@ async fn download(url: String) {
     let result = downloader.download().await;
     match result {
         Ok(response) => {
-            save_file(url, response);
+            save_file(url, response).await;
         }
         Err(error) => {
             println!("{error}");
@@ -45,6 +47,23 @@ async fn download(url: String) {
     }
 }
 
-fn save_file(url: String, data: Box<Bytes>) {
-    
+async fn save_file(url: String, data: Box<Bytes>) {
+    let url_parsed = Url::parse(&url.to_string()).unwrap();
+        
+    let file_name = url_parsed
+    .path_segments()
+    .and_then(|segments| segments.last())
+    .ok_or("file")
+    .unwrap();
+
+    let result = FileManager::save_file(file_name, DEST_PATH, data).await;
+    match result {
+        Ok(path) => {
+            println!("File has been downloaded and saved:");
+            println!("Path: {path}");
+        }
+        Err(error) => {
+            println!("Error: {error}");
+        }
+    }
 }
